@@ -9,7 +9,7 @@
     export let snake: Snake;
 
     let lost: boolean = false;
-    let highScore: number = parseInt(window.localStorage.getItem('highScore')) ?? 0;
+    let highScore: number = parseInt(window.localStorage.getItem('highScore') ?? '0');
 
     let grid: Cell[][] = [...Array(size + 1)].map(() =>
         [...Array(size + 1)].map(() => Cell.EMPTY)
