@@ -1,30 +1,41 @@
 <script lang="ts">
-	export let name: string;
+    import type Direction from './Direction';
+    import Grid from './Grid.svelte';
+    import Point from './Point';
+    import Snake from './Snake';
+
+    export let gridSize: number;
+    export let refreshRate: number;
+
+    let direction: Direction = { x: 1, y: 0 };
+    let snake: Snake = new Snake(new Point(Math.floor(gridSize / 2), Math.floor(gridSize / 2)), direction);
+
+    const handleKeydown = (e: KeyboardEvent) => {
+        switch (e.key) {
+        case 'ArrowLeft':
+            direction.x = -1;
+            direction.y = 0;
+            break;
+        case 'ArrowRight':
+            direction.x = 1;
+            direction.y = 0;
+            break;
+        case 'ArrowUp':
+            direction.x = 0;
+            direction.y = -1;
+            break;
+        case 'ArrowDown':
+            direction.x = 0;
+            direction.y = 1;
+            break;
+        }
+
+        snake.direction = direction;
+    }
 </script>
 
 <main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
+    <Grid size={gridSize} snake={snake} refreshRate={refreshRate} />
 </main>
 
-<style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
-
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
-</style>
+<svelte:window on:keydown={handleKeydown} />
